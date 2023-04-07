@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
-
+import "./App1.css";
+import Home from "./pages/Home";
+import ReportPage from "./pages/ReportPage";
+import Admin from "./pages/Admin";
+import CreateReport from "./pages/CreateReport";
+import { useState } from "react";
+import LoginPage from "./pages/LoginPage";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import RootHome from "./pages/RootHome";
+import RootAdmin from "./pages/RootAdmin";
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [reportStateObj, setReportStateObj] = useState([]);
+
+  const router = createBrowserRouter([
+    { path: "/", element: <LoginPage /> },
+    {
+      path: "/reportpage",
+      element: <RootHome />,
+      children: [
+        { index: true, element: <Home /> },
+        { path: "/reportpage/:id", element: <ReportPage /> },
+      ],
+    },
+    {
+      path: "/admin/reports",
+      element: <RootAdmin />,
+      children: [
+        { index: true, element: <Admin reportStateObj={reportStateObj} /> },
+        {
+          path: "/admin/reports/createreport",
+          element: <CreateReport onCreateReportObject={setReportStateObj} />,
+        },
+      ],
+    },
+  ]);
+  return <RouterProvider router={router} />;
 }
 
 export default App;
