@@ -2,15 +2,23 @@ import Card from "../components/Card";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Search from "../components/Search";
+// import mockedData from "../../public/data.json";
 function Home() {
   const [data, setData] = useState([]);
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
-    fetch(`http://localhost:3333/api/candidates`)
+    // fetch(`http://localhost:3333/api/candidates`);
+    fetch("data.json", {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    })
       .then((res) => res.json())
       .then((dataObj) => {
-        setData(dataObj);
+        setData(dataObj.candidates);
+        console.log(dataObj);
       });
   }, []);
 

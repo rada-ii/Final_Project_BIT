@@ -1,8 +1,9 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import Search from "../components/Search";
 import AdminReport from "../components/AdminReport";
 import { useNavigate } from "react-router-dom";
+import data from "../db/data.json";
+
 function Admin(props) {
   const [inputValue, setInputValue] = useState("");
   const [reports, setReports] = useState([]);
@@ -12,36 +13,38 @@ function Admin(props) {
   const createReportHandler = () => {
     navigate("/admin/reports/createreport");
   };
+
   const fetchReports = async () => {
-    const res = await fetch(`http://localhost:3333/api/reports`);
-    const data = await res.json();
-    setReports(data);
+    // Commented out the fetch call to external API
+    // const res = await fetch(`http://localhost:3333/api/reports`);
+    // const data = await res.json();
+
+    // Set the state with data from the imported data.json file
+    setReports(data.reports);
   };
-
-  const onDeleteHandler = (reportId) => {
-    const filtertedData = reports.filter(
-      (report) => report.id !== Number(reportId)
-    );
-
-    setReports(filtertedData);
-  };
-
-  const searchHandler = (e) => {
-    setInputValue(e.target.value);
-
-    // setReports(filteredData);
-  };
-  const filteredData = reports.slice().filter((report) => {
-    if (
-      report.companyName.toLowerCase().includes(inputValue.toLowerCase()) ||
-      report.candidateName.toLowerCase().includes(inputValue.toLowerCase())
-    )
-      return report;
-  });
 
   useEffect(() => {
     fetchReports();
   }, []);
+
+  const onDeleteHandler = (reportId) => {
+    const filteredData = reports.filter(
+      (report) => report.id !== Number(reportId)
+    );
+
+    setReports(filteredData);
+  };
+
+  const searchHandler = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const filteredData = reports.filter(
+    (report) =>
+      report.companyName.toLowerCase().includes(inputValue.toLowerCase()) ||
+      report.candidateName.toLowerCase().includes(inputValue.toLowerCase())
+  );
+
   return (
     <>
       <section className="this-needs-more-padding">

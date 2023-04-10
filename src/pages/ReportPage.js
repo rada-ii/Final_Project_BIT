@@ -7,6 +7,7 @@ import TableRow from "../components/TableRow";
 
 import maleImg from "../images/male.jpg";
 import femaleImg from "../images/female.jpg";
+import data from "../db/data.json";
 
 export default function ReportPage() {
   const [userInfo, setUserInfo] = useState();
@@ -27,16 +28,13 @@ export default function ReportPage() {
   };
 
   const fetchReportData = async () => {
-    const res = await fetch(
-      `http://localhost:3333/api/reports?candidateId=${id}`
-    );
-    const data = await res.json();
-    setTransformedData(data);
+    const filteredData = data.filter((reports) => reports.candidateId === id);
+    setTransformedData(filteredData);
   };
+
   const fetchUserData = async () => {
-    const res = await fetch(`http://localhost:3333/api/candidates?id=${id}`);
-    const [data] = await res.json();
-    setUserInfo(data);
+    const [userData] = data.filter((candidates) => candidates.id === id);
+    setUserInfo(userData);
   };
 
   useEffect(() => {

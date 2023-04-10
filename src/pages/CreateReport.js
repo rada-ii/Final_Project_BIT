@@ -16,15 +16,26 @@ function CreateReport({ onCreateReportObject }) {
   const [textValue, setTextValue] = useState("");
   let navigate = useNavigate();
   const fetchUsers = async () => {
-    const res = await fetch(`http://localhost:3333/api/candidates`);
+    // const res = await fetch(`http://localhost:3333/api/candidates`);
+    const res = await fetch("data.json", {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
     const data = await res.json();
-    setUsers(data);
+    setUsers(data.candidates);
   };
 
   const fetchReports = async () => {
-    const res = await fetch(`http://localhost:3333/api/reports`);
+    const res = await fetch("data.json", {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
     const data = await res.json();
-    setReports(data);
+    setReports(data.reports);
   };
   const nextStep = () => {
     setStep((prevStep) => prevStep + 1);
